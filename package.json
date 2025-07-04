@@ -1,0 +1,12 @@
+{
+  "name": "solace-samples-javascript",
+  "version": "1.0.0",
+  "description": "Solace Web Messaging API for JavaScript 示例",
+  "scripts": {
+    "start": "http-server -o -c-1",
+    "dev": "http-server -o -c-1"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}

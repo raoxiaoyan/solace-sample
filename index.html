@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solace JavaScript 示例</title>
+  <link rel="stylesheet" href="src/resources/css/pure.css">
+  <link rel="stylesheet" href="src/resources/css/samples.css">
+  <style>
+    .main-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .sample-list {
+      margin-top: 30px;
+    }
+    .sample-card {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 15px;
+      margin-bottom: 15px;
+      background-color: #f9f9f9;
+    }
+    .sample-title {
+      margin-top: 0;
+      color: #333;
+    }
+    .sample-description {
+      margin-bottom: 15px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="banner">
+    <div class="banner-interior">
+      <span class="logo">
+        <a href="http://dev.solace.com/">
+          <img src="src/resources/images/solace-logo-white.png"/>
+        </a>
+      </span>
+      <div class="banner-heading">
+        Solace Web Messaging API for JavaScript 示例
+      </div>
+    </div>
+  </div>
+
+  <div class="main-container">
+    <h1>基础示例</h1>
+    <p>这些示例演示了如何使用 Solace Web Messaging API for JavaScript 实现各种消息传递模式。</p>
+    
+    <div class="sample-list">
+      <div class="sample-card">
+        <h3 class="sample-title">保证消息发布 (Guaranteed Publisher)</h3>
+        <p class="sample-description">演示如何在主题上发送持久化消息。</p>
+        <a href="src/basic-samples/GuaranteedPublisher/GuaranteedPublisher.html" class="pure-button pure-button-primary">查看示例</a>
+      </div>
+      
+      <div class="sample-card">
+        <h3 class="sample-title">保证消息消费 (Guaranteed Consumer)</h3>
+        <p class="sample-description">演示如何从主题上接收持久化消息。</p>
+        <a href="src/basic-samples/GuaranteedConsumer/GuaranteedConsumer.html" class="pure-button pure-button-primary">查看示例</a>
+      </div>
+      
+      <div class="sample-card">
+        <h3 class="sample-title">主题发布 (Topic Publisher)</h3>
+        <p class="sample-description">演示如何在主题上发布直接消息。</p>
+        <a href="src/basic-samples/TopicPublisher/TopicPublisher.html" class="pure-button pure-button-primary">查看示例</a>
+      </div>
+      
+      <div class="sample-card">
+        <h3 class="sample-title">主题订阅 (Topic Subscriber)</h3>
+        <p class="sample-description">演示如何订阅主题并接收直接消息。</p>
+        <a href="src/basic-samples/TopicSubscriber/TopicSubscriber.html" class="pure-button pure-button-primary">查看示例</a>
+      </div>
+      
+      <div class="sample-card">
+        <h3 class="sample-title">请求/回复 (Request/Reply)</h3>
+        <p class="sample-description">演示如何实现请求/回复消息传递模式。</p>
+        <a href="src/basic-samples/RequestReply/RequestReply.html" class="pure-button pure-button-primary">查看示例</a>
+      </div>
+      
+      <div class="sample-card">
+        <h3 class="sample-title">队列消费者 (Queue Consumer)</h3>
+        <p class="sample-description">演示如何从队列中消费消息。</p>
+        <a href="src/basic-samples/QueueConsumer/QueueConsumer.html" class="pure-button pure-button-primary">查看示例</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
