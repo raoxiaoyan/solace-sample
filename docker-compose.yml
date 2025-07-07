@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   # Web应用服务
   web:
@@ -8,7 +6,7 @@ services:
     volumes:
       - .:/app
     ports:
-      - "8090:8080"  # 修改为8090端口，避免与solace冲突
+      - "8090:8080"
     command: >
       sh -c "npm install -g pnpm && 
              pnpm install && 
@@ -19,30 +17,63 @@ services:
       - solace
     networks:
       - solace-network
-
-  # Solace PubSub+消息代理服务
   solace:
+    container_name: pubSubStandardSingleNode
     image: solace/solace-pubsub-standard:latest
-    ports:
-      - "8080:8080"  # Web管理界面
-      - "55555:55555" # SMF连接
-      - "8008:8008"   # MQTT连接
-      - "1883:1883"   # MQTT连接
-      - "8000:8000"   # REST连接
-      - "9000:9000"   # REST连接
-      - "2222:2222"   # SEMP/管理API
-    environment:
-      - USERNAME_ADMIN_PASSWORD=admin
-      - USERNAME_ADMIN_GLOBALACCESSLEVEL=admin
     volumes:
-      - solace-data:/var/lib/solace
+      - "solace-data:/var/lib/solace"
+    shm_size: 1g
+    ulimits:
+      core: -1
+      nofile:
+        soft: 2448
+        hard: 1048576
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 1
+    ports:
+    #Port Mappings:  With the exception of SMF, ports are mapped straight
+    #through from host to container.  This may result in port collisions on
+    #commonly used ports that will cause failure of the container to start.
+      #Web transport
+      - '8008:8008'
+      #Web transport over TLS
+      - '1443:1443'
+      #SEMP over TLS
+      - '1943:1943'
+      #MQTT Default VPN
+      - '1883:1883'
+      #AMQP Default VPN over TLS
+      - '5671:5671'
+      #AMQP Default VPN
+      - '5672:5672'
+      #MQTT Default VPN over WebSockets
+      - '8000:8000'
+      #MQTT Default VPN over WebSockets / TLS
+      - '8443:8443'
+      #MQTT Default VPN over TLS
+      - '8883:8883'
+      #SEMP / PubSub+ Manager
+      - '8080:8080'
+      #REST Default VPN
+      - '9000:9000'
+      #REST Default VPN over TLS
+      - '9443:9443'
+      #SMF
+      - '55554:55555'
+      #SMF Compressed
+      - '55003:55003'
+      #SMF over TLS
+      - '55443:55443'
+      #SSH connection to CLI
+      - '2222:2222'
+    environment:
+      - username_admin_globalaccesslevel=admin
+      - username_admin_password=admin
+      - system_scaling_maxconnectioncount=100
     networks:
       - solace-network
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
 
 volumes:
   solace-data:
