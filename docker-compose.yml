@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+  # Web应用服务
+  web:
+    image: node:18-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+    ports:
+      - "8090:8080"  # 修改为8090端口，避免与solace冲突
+    command: >
+      sh -c "npm install -g pnpm && 
+             pnpm install && 
+             pnpm start"
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - solace
+    networks:
+      - solace-network
+
+  # Solace PubSub+消息代理服务
+  solace:
+    image: solace/solace-pubsub-standard:latest
+    ports:
+      - "8080:8080"  # Web管理界面
+      - "55555:55555" # SMF连接
+      - "8008:8008"   # MQTT连接
+      - "1883:1883"   # MQTT连接
+      - "8000:8000"   # REST连接
+      - "9000:9000"   # REST连接
+      - "2222:2222"   # SEMP/管理API
+    environment:
+      - USERNAME_ADMIN_PASSWORD=admin
+      - USERNAME_ADMIN_GLOBALACCESSLEVEL=admin
+    volumes:
+      - solace-data:/var/lib/solace
+    networks:
+      - solace-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+volumes:
+  solace-data:
+
+networks:
+  solace-network:
+    driver: bridge
